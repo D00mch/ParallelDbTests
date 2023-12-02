@@ -1,0 +1,46 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.9.0'
+    id 'application'
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.postgresql:postgresql:42.2.5'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
+}
+
+tasks.register('testCleanup', JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass.set('setup.CleanDbCopiesCommandKt')
+}
+
+testCleanup {}
+
+test {
+    enableAssertions = true
+    useJUnitPlatform()
+    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+
+    testLogging {
+        exceptionFormat = 'FULL'
+        showStandardStreams = true
+        showStackTraces = true
+        events "PASSED", "FAILED", "STANDARD_OUT", "STANDARD_ERROR"
+    }
+
+    finalizedBy testCleanup
+}
+
+kotlin {
+    jvmToolchain(17)
+}
+
+application {
+    mainClassName = 'MainKt'
+}

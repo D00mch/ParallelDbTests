@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+
+  postgres:
+    image: postgres:11
+    command: -E # prints all the statement; slow but useful for debugging
+    restart: always
+    networks:
+      - ar
+    hostname: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.docker/postgres/data:/var/lib/postgresql/data
+      - ./.docker/postgres/initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_DB=parallel_tests
+      - POSTGRES_PASSWORD=parallel_tests
+      - POSTGRES_USER=parallel_tests
+
+networks:
+  ar:
