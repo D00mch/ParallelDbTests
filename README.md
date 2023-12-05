@@ -14,3 +14,7 @@ make docker-up
 ```
 
 Both tests use different copies of the DB if you have at least 4 CPU.
+
+## Articles
+
+[Как распараллелить тесты с базой данных](https://habr.com/ru/users/arturdumchev/publications/articles/)
